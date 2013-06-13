@@ -190,14 +190,14 @@ header k v = MS.modify $ setHeader (CI.mk $ lazyTextToStrictByteString k, lazyTe
 -- header to \"text/plain\".
 text :: T.Text -> ActionM ()
 text t = do
-    header "Content-Type" "text/plain"
+    header "Content-Type" "text/plain; charset=utf-8"
     MS.modify $ setContent $ ContentBuilder $ fromLazyByteString $ encodeUtf8 t
 
 -- | Set the body of the response to the given 'T.Text' value. Also sets \"Content-Type\"
 -- header to \"text/html\".
 html :: T.Text -> ActionM ()
 html t = do
-    header "Content-Type" "text/html"
+    header "Content-Type" "text/html; charset=utf-8"
     MS.modify $ setContent $ ContentBuilder $ fromLazyByteString $ encodeUtf8 t
 
 -- | Send a file as the response. Doesn't set the \"Content-Type\" header, so you probably
@@ -209,7 +209,7 @@ file = MS.modify . setContent . ContentFile
 -- header to \"application/json\".
 json :: (A.ToJSON a) => a -> ActionM ()
 json v = do
-    header "Content-Type" "application/json"
+    header "Content-Type" "application/json; charset=utf-8"
     MS.modify $ setContent $ ContentBuilder $ fromLazyByteString $ A.encode v
 
 -- | Set the body of the response to a Source. Doesn't set the
